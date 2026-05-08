@@ -131,20 +131,50 @@ python cli.py interactive
 python cli.py gui
 ```
 
-### `place-order` arguments
+### `place-order` command arguments
 
-| Argument       | Description                       |
-|----------------|-----------------------------------|
-| `symbol`       | Trading pair (e.g. BTCUSDT)       |
-| `side`         | BUY or SELL                      |
-| `order_type`   | MARKET or LIMIT                   |
-| `quantity`     | Order quantity                    |
-| `--price, -p`  | Price (required for LIMIT orders) |
+```
+python cli.py place-order SYMBOL SIDE ORDER_TYPE QUANTITY [--price PRICE]
+```
+
+| Argument                | Description                       |
+|-------------------------|-----------------------------------|
+| `SYMBOL`                | Trading pair (e.g. BTCUSDT)       |
+| `SIDE`                  | BUY or SELL                       |
+| `ORDER_TYPE`            | MARKET or LIMIT                   |
+| `QUANTITY`              | Order quantity                    |
+| `--price, -p`  (option) | Price — required for LIMIT orders |
+
+> **Note**: Negative quantities (for testing validation) require `-- ` before
+> the value, e.g. `python cli.py place-order BTCUSDT BUY MARKET -- -1`.
+> This is standard CLI behaviour — tokens starting with `-` are parsed as
+> options. Interactive and GUI modes handle negative values natively.
 
 ### Interactive mode
 
 Run `python cli.py interactive` and follow the prompts. The tool displays a
 summary before confirming the order, then shows the API response.
+
+---
+
+## Exchange-specific validations
+
+Binance Futures enforces several trading rules that cannot be fully validated
+locally without fetching per-symbol filters:
+
+| Validation | Description |
+|------------|-------------|
+| **Price filters** | LIMIT orders must be within a percentage of the mark price |
+| **Tick size** | Price must conform to the symbol's tick size (e.g. 0.01 for BTCUSDT) |
+| **Lot size** | Quantity must be a multiple of the symbol's `stepSize` |
+| **Min / max notional** | Order value (`qty × price`) must be within allowed bounds |
+| **Max quantity** | Each symbol has a maximum order quantity |
+
+The bot validates `quantity > 0`, `price > 0`, and correct side/type values
+before sending orders. Binance's own filters handle the symbol-specific rules.
+
+> **Future improvement**: Pre-fetch `exchangeInfo` filters for the target
+> symbol and validate locally before submission.
 
 ---
 
@@ -221,10 +251,8 @@ during development.
 
 ## Future improvements
 
-- Fetch and validate per-symbol precision rules (`LOT_SIZE`, `MIN_QTY`)
-- Poll order status after MARKET placement to display a filled `avgPrice`
-- Add order cancellation and position/balance display
-- Colour-coded log output in the terminal
+- Pre-fetch `exchangeInfo` filters for local precision and lot-size validation
+- Order cancellation, position tracking, and balance display
 - Configurable log levels via `.env`
 - Installable package (`pyproject.toml` / `setup.py`)
 - Unit tests for validators and order formatting
