@@ -39,7 +39,7 @@ trading_bot/
 │
 ├── cli.py                # Typer CLI (direct + interactive + gui commands)
 ├── logs/                 # Log output directory
-├── screenshots/          # Screenshots
+├── public/               # Screenshots
 │
 ├── requirements.txt
 ├── .env.example
@@ -225,13 +225,65 @@ API secrets are **never** logged.
 
 ## Screenshots
 
-> CLI — Order summary
->
-> *(screenshot here)*
+---
 
-> GUI — Main window
->
-> *(screenshot here)*
+### CLI — Market Order Execution
+
+Demonstrates successful MARKET order placement through the CLI with
+formatted request/response output.
+
+![CLI Market Order Success](public/cli-market-order-success.png)
+
+---
+
+### CLI — Limit Order Execution
+
+Shows LIMIT order placement with price handling and structured response
+formatting.
+
+![CLI Limit Order Success](public/cli-limit-order-success.png)
+
+---
+
+### Interactive CLI Mode
+
+Step-by-step guided order placement workflow with prompts, validation,
+and confirmation.
+
+![Interactive Mode Flow](public/interactive-mode-flow.png)
+
+---
+
+### Lightweight Desktop GUI
+
+Minimal tkinter-based desktop interface with dropdowns, validation, and
+live order submission.
+
+![GUI Window](public/gui-window.png)
+
+---
+
+### Validation & Error Handling
+
+Example of graceful validation feedback for invalid user input.
+
+![Validation Error](public/validation-error.png)
+
+---
+
+### Binance Futures Testnet Verification
+
+Orders successfully appearing in Binance Futures Testnet order history.
+
+![Binance Order History](public/binance-order-history.png)
+
+---
+
+### Structured Logging
+
+Example log output showing API requests, responses, and error tracking.
+
+![Log File](public/log-file.png)
 
 ---
 
@@ -256,3 +308,16 @@ during development.
 - Configurable log levels via `.env`
 - Installable package (`pyproject.toml` / `setup.py`)
 - Unit tests for validators and order formatting
+
+
+---
+
+## Interested in collaborating, Contact Me:
+
+#### Praneeth Varma Kopperla
+GitHub: https://github.com/pvk-96
+
+Email: praneethvarmakopperla@gmail.com
+
+Portfolio: https://pvk96.in
+
